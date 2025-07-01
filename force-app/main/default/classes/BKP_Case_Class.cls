@@ -13,7 +13,6 @@ public class BKP_Case_Class {
                 case_Type__c='Demo-Update',
                 parentId=l.Id); 
             followupCases.add(fc);
-            SYstem.debug('hello'); 
         }
         //upsert followupCases;
         //System.debug('Apex Class Child Case'+'\t'+followupCases[0].ID);
