@@ -5,8 +5,12 @@
     <name>ApexClass</name>
   </types>
   <types>
-    <members>*</members>
+    <members>MaintenanceRequest</members>
     <name>ApexTrigger</name>
+  </types>
+  <types>
+       <members>checkTrigger</members>
+       <name>ApexTrigger</name>
   </types>
   <version>59.0</version>
 </Package>

@@ -21,7 +21,7 @@ public class Class3 {
             tempCase1.Type='Routine Maintenance';
             tempCase1.Status='New';
             tempCase1.Date_Reported__c=date.today();
-            tempCase1.Case_Type__c='Child Case Of'+''+loopCase1.ID;
+            tempCase1.Case_Type__c='Child Case Of'+''+loopCase1.ID+''+loopCase1.caseNumber;
             if(passMethod2Map.get(loopCase1.Id)!=null)
                 tempCase1.Date_Due__c=date.today()+passMethod2Map.get(loopCase1.Id);
             else tempCase1.date_Due__c=date.today();
