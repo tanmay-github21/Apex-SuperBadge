@@ -12,5 +12,11 @@
        <members>checkTrigger</members>
        <name>ApexTrigger</name>
   </types>
+  <types> 
+       <members>Case</members>
+       <members>Product2</members>
+       <members>Opportunity</members>
+       <name>CustomObject</name>
+  </types>
   <version>59.0</version>
 </Package>
