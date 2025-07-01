@@ -12,5 +12,4 @@ public with sharing class challenge1 {
             }
             else System.debug('Case closed earlier');
         }
-    }
 }
