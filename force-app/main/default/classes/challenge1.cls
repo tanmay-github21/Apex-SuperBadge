@@ -12,8 +12,7 @@ public with sharing class challenge1 {
             else System.debug('The case status arent of the required type');
         }
         if(!equipmentIds.isEmpty()){
-            newEquipItems=[Select ID,origin,type,status,vehicle__c,contactId,(select equipment__c from Equipment_Maintenance_Items__r) from Case WHERE ID IN:equipmentIds]; 
-            System.debug('Equipment items size'+'\t'+newEquipItems.size()); 
+            childCases=[Select ID,origin,type,status,vehicle__c,contactId,(select equipment__c from Equipment_Maintenance_Items__r) from Case WHERE ID IN:idSet];System.debug('Equipment items size'+'\t'+newEquipItems.size()); 
         }
         for(case c1: newEquipItems){
             case c= new case();
