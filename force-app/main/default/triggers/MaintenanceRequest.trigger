@@ -3,6 +3,6 @@ trigger MaintenanceRequest on Case (before update, after update) {
         MaintenanceRequestHelper.updateWorkOrders(trigger.new, trigger.oldMap); 
         System.debug('Trigger Passing Date Apex Class');
     }*/
-    Class3.method1(trigger.new);
+    challenge1.method1(trigger.new, trigger.oldMap);
     System.debug('From trigger'+'\t'+'Passed to apex class'); 
 }
