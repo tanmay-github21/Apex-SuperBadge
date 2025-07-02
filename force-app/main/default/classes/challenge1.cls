@@ -7,7 +7,7 @@ public with sharing class challenge1 {
             case oldCase=oldMap.get(req.ID);
             System.debug('Within For Loop'+'\t'+'oldCase Casenumber'+'\t'+oldCase.caseNumber);
             if(oldCase.status !='Closed' && req.status=='Closed' && 
-            (req.status=='Repair' || req.status=='RoRoutine Maintenance')){
+            (req.status=='Repair' || req.status=='Routine Maintenance')){
                 equipmentIds.add(req.ID);
             }
             else System.debug('Case closed earlier');
