@@ -8,9 +8,12 @@ public with sharing class challenge1 {
             System.debug('Within For Loop'+'\t'+'oldCase Casenumber'+'\t'+oldCase.caseNumber);
             if(oldCase.status !='Closed' && req.status=='Closed' && 
             (req.status=='Repair' || req.status=='RoRoutine Maintenance')){
-                
+                 equipmentIds.add(req.id);
             }
             else System.debug('Case closed earlier');
+            if(!equipmentIds.isEmpty()){
+                newEquipItems=[];
+            }
         }
     }
 }
