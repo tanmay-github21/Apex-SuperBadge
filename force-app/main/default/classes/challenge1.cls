@@ -1,12 +1,12 @@
 public with sharing class challenge1 {
-    public static void method1(list<case> newList, map<id,Case> oldMap){
+    public static void updateWorkOrders(list<case> newList, map<id,Case> oldMap){
         list<case>updatedCases=new list<case>();
         list<case>followupCases=new list<case>();
         map<string, integer> minimumDateMap= method2(newList);
         map<id,case> caseMap=new map<id,case>();
         set<ID> updatedCaseIds= new map <Id,case>(newList).keySet();
         System.debug('From Apex Class'+'\t'+'updatedCaseIds size'+'\t'+updatedCaseIds.size());
-        updatedCases=[Select vehicle__c, (select equipment__c from Equipment_Maintenance_Items__r) from case WHERE ID IN:updatedCaseIds];
+        updatedCases=[Select vehicle__c,caseNumber, (select equipment__c from Equipment_Maintenance_Items__r) from case WHERE ID IN:updatedCaseIds];
         for(case tempCase:updatedCases){
             case c= new case();
             c.ParentId=tempcase.Id;
@@ -19,6 +19,19 @@ public with sharing class challenge1 {
             caseMap.put(tempCase.Id,c);
         }
         upsert caseMap.values();
+        list<Equipment_Maintenance_Item__c> emi=new list<Equipment_Maintenance_Item__c>(); 
+        for(case tempCase:updatedCases){
+            case child= caseMap.get(tempCase.Id);
+            if(tempCase.equipment_maintenance_Items__r !=null){
+                for(Equipment_Maintenance_Item__c oldItem:tempCase.equipment_maintenance_Items__r){
+                    Equipment_Maintenance_Item__c newItem= new Equipment_Maintenance_Item__c();
+                    newItem.Equipment__c=oldItem.Equipment__c;
+                    newItem.Maintenance_Request__c=child.Id;
+                    emi.add(newItem);
+                }
+            }
+        }
+        insert emi; 
     }
     public static map<string,integer> method2(list<case> miniumDateCaseList){
         integer addDays=0;
