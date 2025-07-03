@@ -1,8 +1,4 @@
 trigger MaintenanceRequest on Case (before update, after update) {
-    /*if(trigger.isUpdate && trigger.isAfter){
-        MaintenanceRequestHelper.updateWorkOrders(trigger.new, trigger.oldMap); 
-        System.debug('Trigger Passing Date Apex Class');
-    }*/
     list<case> casesToBeProcessed=new list<case>();
     if(trigger.isUpdate && trigger.isAfter){
         for(Case newcase: trigger.new){
@@ -14,8 +10,7 @@ trigger MaintenanceRequest on Case (before update, after update) {
             else system.debug('Trigger case type check didnt match the requirements');
         }
     }
-    //challenge1.method1(trigger.new, trigger.oldMap);
     System.debug('From trigger case records passed to apex class and size is'+'\t'+casesToBeProcessed.size());
-    challenge1.method1(casesToBeProcessed, trigger.oldMap);
+    MaintenanceRequestHelper.updateWorkOrders(casesToBeProcessed, trigger.oldMap); 
     System.debug('From trigger case records passed to apex class and size is'+'\t'+casesToBeProcessed.size());
 }
