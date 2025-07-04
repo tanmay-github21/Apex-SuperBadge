@@ -1,0 +1,135 @@
+45.0 APEX_CODE,FINEST;APEX_PROFILING,FINEST;CALLOUT,FINEST;DATA_ACCESS,INFO;DB,FINEST;NBA,FINE;SYSTEM,FINE;VALIDATION,INFO;VISUALFORCE,FINER;WAVE,FINEST;WORKFLOW,FINER
+14:51:54.1 (1896641)|USER_INFO|[EXTERNAL]|005dM000005bmM9|tanmay_apexsuperbadge@trailhead.com|(GMT+05:30) India Standard Time (Asia/Kolkata)|GMT+05:30
+14:51:54.1 (1971235)|EXECUTION_STARTED
+14:51:54.1 (2003887)|CODE_UNIT_STARTED|[EXTERNAL]|01pdM000005d25Z|WarehouseCalloutService
+14:51:54.1 (2324713)|HEAP_ALLOCATE|[93]|Bytes:3
+14:51:54.1 (2448698)|HEAP_ALLOCATE|[98]|Bytes:152
+14:51:54.1 (2466880)|HEAP_ALLOCATE|[415]|Bytes:408
+14:51:54.1 (2479070)|HEAP_ALLOCATE|[428]|Bytes:408
+14:51:54.1 (2490521)|HEAP_ALLOCATE|[536]|Bytes:48
+14:51:54.1 (2520282)|HEAP_ALLOCATE|[247]|Bytes:6
+14:51:54.1 (2598975)|HEAP_ALLOCATE|[EXTERNAL]|Bytes:5
+14:51:54.1 (2622096)|SYSTEM_METHOD_ENTRY|[14]|QueueableContextImpl.QueueableContextImpl()
+14:51:54.1 (2628237)|STATEMENT_EXECUTE|[14]
+14:51:54.1 (2638677)|SYSTEM_METHOD_EXIT|[14]|QueueableContextImpl
+14:51:54.1 (2646689)|HEAP_ALLOCATE|[EXTERNAL]|Bytes:8
+14:51:54.1 (2650809)|HEAP_ALLOCATE|[EXTERNAL]|Bytes:4
+14:51:54.1 (2655449)|VARIABLE_SCOPE_BEGIN|[21]|this|System.QueueableContextImpl|true|false
+14:51:54.1 (2733933)|VARIABLE_ASSIGNMENT|[21]|this|{}|0x7834b338
+14:51:54.1 (2739823)|VARIABLE_SCOPE_BEGIN|[21]|jobId|Id|false|false
+14:51:54.1 (2875289)|VARIABLE_ASSIGNMENT|[21]|jobId|"707dM00000fdfVbQAI"
+14:51:54.1 (6488605)|VARIABLE_SCOPE_BEGIN|[3]|WarehouseCalloutService.WAREHOUSE_URL|String|false|true
+14:51:54.1 (8582037)|HEAP_ALLOCATE|[EXTERNAL]|Bytes:1
+14:51:54.1 (8609967)|HEAP_ALLOCATE|[EXTERNAL]|Bytes:10
+14:51:54.1 (8614828)|HEAP_ALLOCATE|[EXTERNAL]|Bytes:50
+14:51:54.1 (8636819)|VARIABLE_ASSIGNMENT|[EXTERNAL]|WarehouseCalloutService.WAREHOUSE_URL|"https://th-superbadg (30 more) ..."
+14:51:54.1 (8672981)|METHOD_ENTRY|[1]|01pdM000005d25Z|WarehouseCalloutService.WarehouseCalloutService()
+14:51:54.1 (8680010)|STATEMENT_EXECUTE|[1]
+14:51:54.1 (8687402)|STATEMENT_EXECUTE|[1]
+14:51:54.1 (8697382)|METHOD_EXIT|[1]|WarehouseCalloutService
+14:51:54.1 (8714593)|HEAP_ALLOCATE|[EXTERNAL]|Bytes:4
+14:51:54.1 (8719203)|HEAP_ALLOCATE|[EXTERNAL]|Bytes:8
+14:51:54.1 (8726474)|VARIABLE_SCOPE_BEGIN|[4]|this|WarehouseCalloutService|true|false
+14:51:54.1 (8764305)|VARIABLE_ASSIGNMENT|[4]|this|{}|0x2d8b690e
+14:51:54.1 (8769596)|VARIABLE_SCOPE_BEGIN|[4]|context|System.QueueableContext|true|false
+14:51:54.1 (8884611)|VARIABLE_ASSIGNMENT|[4]|context|{"jobId":"707dM00000fdfVbQAI"}|0x7834b338
+14:51:54.1 (8897621)|STATEMENT_EXECUTE|[4]
+14:51:54.1 (8899741)|STATEMENT_EXECUTE|[5]
+14:51:54.1 (8969895)|VARIABLE_SCOPE_BEGIN|[5]|productRecords|List<ANY>|true|false
+14:51:54.1 (8983816)|VARIABLE_ASSIGNMENT|[5]|productRecords|null|
+14:51:54.1 (8987656)|STATEMENT_EXECUTE|[6]
+14:51:54.1 (9068760)|VARIABLE_SCOPE_BEGIN|[6]|products|List<Product2>|true|false
+14:51:54.1 (9078391)|VARIABLE_ASSIGNMENT|[6]|products|null|
+14:51:54.1 (9082051)|STATEMENT_EXECUTE|[7]
+14:51:54.1 (9087021)|HEAP_ALLOCATE|[7]|Bytes:30
+14:51:54.1 (9119833)|HEAP_ALLOCATE|[68]|Bytes:5
+14:51:54.1 (9158024)|HEAP_ALLOCATE|[74]|Bytes:5
+14:51:54.1 (9166305)|HEAP_ALLOCATE|[82]|Bytes:7
+14:51:54.1 (9211917)|SYSTEM_METHOD_ENTRY|[7]|System.debug(ANY)
+14:51:54.1 (9249779)|USER_DEBUG|[7]|DEBUG|Hello from the Queueable class
+14:51:54.1 (9262229)|SYSTEM_METHOD_EXIT|[7]|System.debug(ANY)
+14:51:54.1 (9268910)|STATEMENT_EXECUTE|[8]
+14:51:54.1 (9318332)|VARIABLE_SCOPE_BEGIN|[8]|http|System.Http|true|false
+14:51:54.1 (9368665)|VARIABLE_ASSIGNMENT|[8]|http|"System.Http[]"|0x6542c3f6
+14:51:54.1 (9374175)|STATEMENT_EXECUTE|[9]
+14:51:54.1 (9391676)|VARIABLE_SCOPE_BEGIN|[9]|request|System.HttpRequest|true|false
+14:51:54.1 (9414357)|VARIABLE_ASSIGNMENT|[9]|request|"System.HttpRequest[Endpoint=null, Method=null]"|0x6941af92
+14:51:54.1 (9419217)|STATEMENT_EXECUTE|[10]
+14:51:54.1 (9522582)|SYSTEM_METHOD_ENTRY|[10]|System.HttpRequest.setEndpoint(String)
+14:51:54.1 (9561474)|SYSTEM_METHOD_EXIT|[10]|System.HttpRequest.setEndpoint(String)
+14:51:54.1 (9566974)|STATEMENT_EXECUTE|[11]
+14:51:54.1 (9570614)|HEAP_ALLOCATE|[11]|Bytes:3
+14:51:54.1 (9597556)|SYSTEM_METHOD_ENTRY|[11]|System.HttpRequest.setMethod(String)
+14:51:54.1 (9615066)|SYSTEM_METHOD_EXIT|[11]|System.HttpRequest.setMethod(String)
+14:51:54.1 (9618827)|STATEMENT_EXECUTE|[12]
+14:51:54.1 (9637558)|SYSTEM_METHOD_ENTRY|[12]|System.Http.send(ANY)
+14:51:54.1 (9765434)|LIMIT_USAGE|[12]|CALLOUT|1|100
+14:51:54.1 (9782755)|CALLOUT_REQUEST|[12]|System.HttpRequest[Endpoint=https://th-superbadge-apex.herokuapp.com/equipment, Method=GET]
+14:51:54.1 (791886063)|HEAP_ALLOCATE|[EXTERNAL]|Bytes:3542
+14:51:54.1 (793112502)|CALLOUT_RESPONSE|[12]|System.HttpResponse[Status=OK, StatusCode=200]
+14:51:54.1 (793281581)|HEAP_ALLOCATE|[12]|Bytes:3345
+14:51:54.1 (793330153)|SYSTEM_METHOD_EXIT|[12]|System.Http.send(ANY)
+14:51:54.1 (793349535)|VARIABLE_SCOPE_BEGIN|[12]|response|System.HttpResponse|true|false
+14:51:54.1 (793413338)|VARIABLE_ASSIGNMENT|[12]|response|"System.HttpResponse[Status=OK, StatusCode=200]"|0x4a602766
+14:51:54.1 (793446928)|SYSTEM_METHOD_ENTRY|[13]|System.HttpResponse.getStatusCode()
+14:51:54.1 (793484151)|SYSTEM_METHOD_EXIT|[13]|System.HttpResponse.getStatusCode()
+14:51:54.1 (793496882)|STATEMENT_EXECUTE|[13]
+14:51:54.1 (793499022)|STATEMENT_EXECUTE|[14]
+14:51:54.1 (793505272)|SYSTEM_METHOD_ENTRY|[14]|System.HttpResponse.getBody()
+14:51:54.1 (793568195)|HEAP_ALLOCATE|[14]|Bytes:3339
+14:51:54.1 (793574295)|SYSTEM_METHOD_EXIT|[14]|System.HttpResponse.getBody()
+14:51:54.1 (793580286)|VARIABLE_SCOPE_BEGIN|[14]|jsonResponse|String|false|false
+14:51:54.1 (793593736)|VARIABLE_ASSIGNMENT|[14]|jsonResponse|"[{\"_id\":\"55d66226726 (3319 more) ..."
+14:51:54.1 (793597816)|STATEMENT_EXECUTE|[15]
+14:51:54.1 (793601696)|HEAP_ALLOCATE|[15]|Bytes:36
+14:51:54.1 (793610147)|SYSTEM_METHOD_ENTRY|[15]|System.HttpResponse.getBody()
+14:51:54.1 (793654800)|HEAP_ALLOCATE|[15]|Bytes:3339
+14:51:54.1 (793659939)|SYSTEM_METHOD_EXIT|[15]|System.HttpResponse.getBody()
+14:51:54.1 (793684460)|HEAP_ALLOCATE|[15]|Bytes:3375
+14:51:54.1 (793705421)|SYSTEM_METHOD_ENTRY|[15]|System.debug(ANY)
+14:51:54.1 (793720033)|USER_DEBUG|[15]|DEBUG|RAW Response Received From EndPoint	[{"_id":"55d66226726b611100aaf741","replacement":false,"quantity":5,"name":"Generator 1000 kW","maintenanceperiod":365,"lifespan":120,"cost":5000,"sku":"100003"},{"_id":"55d66226726b611100aaf742","replacement":true,"quantity":183,"name":"Cooling Fan","maintenanceperiod":0,"lifespan":0,"cost":300,"sku":"100004"},{"_id":"55d66226726b611100aaf743","replacement":true,"quantity":143,"name":"Fuse 20A","maintenanceperiod":0,"lifespan":0,"cost":22,"sku":"100005"},{"_id":"55d66226726b611100aaf744","replacement":false,"quantity":5,"name":"Generator 2000 kw","maintenanceperiod":365,"lifespan":120,"cost":6000,"sku":"100006"},{"_id":"55d66226726b611100aaf745","replacement":true,"quantity":142,"name":"Fuse 25A","maintenanceperiod":0,"lifespan":0,"cost":28,"sku":"100007"},{"_id":"55d66226726b611100aaf746","replacement":true,"quantity":122,"name":"Fuse 13A","maintenanceperiod":0,"lifespan":0,"cost":10,"sku":"100008"},{"_id":"55d66226726b611100aaf747","replacement":true,"quantity":90,"name":"Ball Valve 10 cm","maintenanceperiod":0,"lifespan":0,"cost":50,"sku":"100009"},{"_id":"55d66226726b611100aaf748","replacement":false,"quantity":2,"name":"Converter","maintenanceperiod":180,"lifespan":120,"cost":3000,"sku":"100010"},{"_id":"55d66226726b611100aaf749","replacement":true,"quantity":75,"name":"Ball Valve 8 cm","maintenanceperiod":0,"lifespan":0,"cost":42,"sku":"100011"},{"_id":"55d66226726b611100aaf74a","replacement":true,"quantity":100,"name":"Breaker 25A","maintenanceperiod":0,"lifespan":0,"cost":30,"sku":"100012"},{"_id":"55d66226726b611100aaf74b","replacement":true,"quantity":150,"name":"Switch","maintenanceperiod":0,"lifespan":0,"cost":100,"sku":"100013"},{"_id":"55d66226726b611100aaf74c","replacement":true,"quantity":200,"name":"Ball Valve 5 cm","maintenanceperiod":0,"lifespan":0,"cost":30,"sku":"100014"},{"_id":"55d66226726b611100aaf74d","replacement":false,"quantity":8,"name":"UPS 3000 VA","maintenanceperiod":180,"lifespan":60,"cost":1600,"sku":"100015"},{"_id":"55d66226726b611100aaf74e","replacement":false,"quantity":10,"name":"UPS 1000 VA","maintenanceperiod":180,"lifespan":48,"cost":1000,"sku":"100016"},{"_id":"55d66226726b611100aaf74f","replacement":true,"quantity":180,"name":"Breaker 8A","maintenanceperiod":0,"lifespan":0,"cost":10,"sku":"100017"},{"_id":"55d66226726b611100aaf750","replacement":false,"quantity":2,"name":"Cooling Tower","maintenanceperiod":365,"lifespan":120,"cost":10000,"sku":"100018"},{"_id":"55d66226726b611100aaf751","replacement":true,"quantity":165,"name":"Motor","maintenanceperiod":0,"lifespan":0,"cost":150,"sku":"100019"},{"_id":"55d66226726b611100aaf752","replacement":true,"quantity":210,"name":"Breaker 13A","maintenanceperiod":0,"lifespan":0,"cost":20,"sku":"100020"},{"_id":"55d66226726b611100aaf753","replacement":true,"quantity":100,"name":"Radiator Pump","maintenanceperiod":0,"lifespan":0,"cost":500,"sku":"100021"},{"_id":"55d66226726b611100aaf754","replacement":true,"quantity":129,"name":"Breaker 20A","maintenanceperiod":0,"lifespan":0,"cost":25,"sku":"100022"},{"_id":"55d66226726b611100aaf73f","replacement":false,"quantity":10,"name":"UPS 2000 VA","maintenanceperiod":180,"lifespan":60,"cost":1350,"sku":"100001"},{"_id":"55d66226726b611100aaf740","replacement":true,"quantity":194,"name":"Fuse 8A","maintenanceperiod":0,"lifespan":0,"cost":5,"sku":"100002"}]
+14:51:54.1 (793747103)|SYSTEM_METHOD_EXIT|[15]|System.debug(ANY)
+14:51:54.1 (793751394)|STATEMENT_EXECUTE|[16]
+14:51:54.1 (793811706)|HEAP_ALLOCATE|[16]|Bytes:24
+14:51:54.1 (793832718)|SYSTEM_METHOD_ENTRY|[1]|JSON.JSON()
+14:51:54.1 (793836018)|STATEMENT_EXECUTE|[1]
+14:51:54.1 (793846188)|SYSTEM_METHOD_EXIT|[1]|JSON
+14:51:54.1 (793873770)|METHOD_ENTRY|[16]||System.JSON.deserializeUntyped(String)
+14:51:54.1 (799814458)|METHOD_EXIT|[16]||System.JSON.deserializeUntyped(String)
+14:51:54.1 (799904373)|HEAP_ALLOCATE|[EXTERNAL]|Bytes:92
+14:51:54.1 (799919453)|VARIABLE_ASSIGNMENT|[16]|productRecords|"List of size 22 too large to display"|0x7171d49c
+14:51:54.1 (799924704)|STATEMENT_EXECUTE|[17]
+14:51:54.1 (799928084)|HEAP_ALLOCATE|[17]|Bytes:17
+14:51:54.1 (799954965)|HEAP_ALLOCATE|[17]|Bytes:36
+14:51:54.1 (799985927)|SYSTEM_METHOD_ENTRY|[17]|String.valueOf(Object)
+14:51:54.1 (800010248)|HEAP_ALLOCATE|[17]|Bytes:131
+14:51:54.1 (800023538)|SYSTEM_METHOD_EXIT|[17]|String.valueOf(Object)
+14:51:54.1 (800030989)|HEAP_ALLOCATE|[17]|Bytes:148
+14:51:54.1 (800041279)|SYSTEM_METHOD_ENTRY|[17]|System.debug(ANY)
+14:51:54.1 (800051080)|USER_DEBUG|[17]|DEBUG|JSON Deserialize	{_id=55d66226726b611100aaf743, cost=22, lifespan=0, maintenanceperiod=0, name=Fuse 20A, quantity=143, replacement=true, sku=100005}
+14:51:54.1 (800057870)|SYSTEM_METHOD_EXIT|[17]|System.debug(ANY)
+14:51:54.1 (800082951)|CODE_UNIT_FINISHED|WarehouseCalloutService
+14:51:54.1 (800092232)|EXECUTION_FINISHED
+14:51:55.2 (1002363696)|CUMULATIVE_PROFILING_BEGIN
+14:51:55.2 (1002363696)|CUMULATIVE_PROFILING|No profiling information for SOQL operations
+14:51:55.2 (1002363696)|CUMULATIVE_PROFILING|No profiling information for SOSL operations
+14:51:55.2 (1002363696)|CUMULATIVE_PROFILING|No profiling information for DML operations
+14:51:55.2 (1002363696)|CUMULATIVE_PROFILING|method invocations|
+External entry point: public void execute(System.QueueableContext): executed 1 time in 791 ms
+Class.WarehouseCalloutService.execute: line 12, column 1: global System.HttpResponse send(ANY): executed 1 time in 784 ms
+Class.WarehouseCalloutService.execute: line 16, column 1: global static Object deserializeUntyped(String): executed 1 time in 6 ms
+Class.WarehouseCalloutService.execute: line 17, column 1: public static String valueOf(Object): executed 2 times in 0 ms
+Class.WarehouseCalloutService.execute: line 7, column 1: global public static void debug(ANY): executed 1 time in 0 ms
+Class.WarehouseCalloutService.execute: line 10, column 1: global void setEndpoint(String): executed 1 time in 0 ms
+Class.WarehouseCalloutService.execute: line 11, column 1: global void setMethod(String): executed 1 time in 0 ms
+Class.WarehouseCalloutService.execute: line 13, column 1: global Integer getStatusCode(): executed 1 time in 0 ms
+Class.WarehouseCalloutService.execute: line 14, column 1: global String getBody(): executed 1 time in 0 ms
+Class.WarehouseCalloutService.execute: line 15, column 1: global String getBody(): executed 2 times in 0 ms
+
+14:51:55.2 (1002363696)|CUMULATIVE_PROFILING_END
+DING_DONG_PING_PONG_SING_A_SONG
+DING_DONG_PING_PONG_SING_A_SONG
+
+DING_DONG_PING_PONG_SING_A_SONG
+njewnfejn n fewj jer bfju
+
