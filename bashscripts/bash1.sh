@@ -6,8 +6,5 @@ ORG_ALIAS="ApexSpecialist"
 # Query TraceFlag
 
 echo "Getting TraceFlag..."
-sfdx force:data:soql:query \\
-  -q "SELECT Id FROM Account LIMIT 1" \\
-  -r csv -u $ORG_ALIAS >  ./logs/
-
+sfdx force:data:soql:query -q "Select ID from traceFlag" -t  > /Users/tdash/Desktop/projects/Apex-SuperBadge/logs/Traceflag.log
 echo "Done! Files saved:"
