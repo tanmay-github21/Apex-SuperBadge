@@ -39,8 +39,9 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
     } //method1 end
     public void updateRecords(map<string,list<object>>processedMap){
         System.debug('Hello from updateRecords Method');
-        
-        
+        for(String s:processedMap.keySet()){
+            System.debug('Value for SKU'+'\t'+s+'List is'+'\t'+processedMap.get(s));
+        }
     } //end of updateRecords or method2
    
 }
