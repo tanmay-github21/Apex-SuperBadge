@@ -49,10 +49,10 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
         for(product2 op2: existingProducts){
             string existingSKU= op2.warehouse_SKU__c; //this has the id of the external system
             if(processedMap.containsKey(existingSKU)){
-                SYstem.debug('Salesforce product record has the existing SKU'); 
+                SYstem.debug('ID Matched In Salesforce'); 
             }
-            else {
-                System.debug('Salesforce product record doesnt have the SKU');
+            else if(!processedMap.containsKey(existingSKU)){
+                System.debug('NO ID Matched In Salesforce');
             }
         }
         
