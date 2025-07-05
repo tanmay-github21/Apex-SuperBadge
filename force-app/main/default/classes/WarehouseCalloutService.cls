@@ -17,9 +17,9 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
             for(object o: productRecords){
                  map<string,object> records= (map<string,object>)o;
                  Boolean checked= (Boolean)records.get('replacement');
-                 if(checked==true){
-                     string sku= (string)records.get('sku');
+                 string sku= (string)records.get('sku');
                      list<object> fieldValues= new List<object>();
+                	 fieldValues.add(records.get('_id'));
                      fieldValues.add(records.get('replacement'));
                      fieldValues.add(records.get('quantity'));
                      fieldValues.add(records.get('name'));
@@ -28,9 +28,7 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                      fieldValues.add(records.get('cost'));
                      skuMap.put(sku,fieldValues);
                  }
-                 else System.debug(records.get('sku')+'\t'+'isn\'t checked');
             }
-        }//statuscode loop
         else System.debug('Status Code isnt 200'+'\t'+response.getStatusCode());
         //ID jobId = System.enqueueJob(new WarehouseCalloutService());
         // System.debug('Job ID: ' + jobId);
@@ -39,9 +37,20 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
     } //method1 end
     public void updateRecords(map<string,list<object>>processedMap){
         System.debug('Hello from updateRecords Method');
-        for(String s:processedMap.keySet()){
-            System.debug('Value for SKU'+'\t'+s+'List is'+'\t'+processedMap.get(s));
+        list<product2> existingProducts=new list<product2>([select 
+                                                           Replacement_Part__c, 
+                                                           Current_Inventory__c,
+                                                           name,
+                                                           Maintenance_Cycle__c,
+                                                           Lifespan_Months__c,
+                                                           cost__c,
+                                                           Warehouse_SKU__c from product2 where warehouse_SKU__c!='']); 
+        list<product2> newProducts= new list<product2>(); 
+        for(product2 op2: existingProducts){
+            string existingSKU= op2.warehouse_SKU__c; 
+            if(processedMap.containsKey(existingSKU)){}
         }
+        
     } //end of updateRecords or method2
    
 }
