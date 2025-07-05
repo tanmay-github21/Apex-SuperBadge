@@ -17,16 +17,16 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
             for(object o: productRecords){
                  map<string,object> records= (map<string,object>)o;
                  Boolean checked= (Boolean)records.get('replacement');
-                 string sku= (string)records.get('sku');
+                 string uniqueId= (string)records.get('_id');
                      list<object> fieldValues= new List<object>();
-                	 fieldValues.add(records.get('_id'));
-                     fieldValues.add(records.get('replacement'));
+                	 fieldValues.add(records.get('replacement'));
                      fieldValues.add(records.get('quantity'));
                      fieldValues.add(records.get('name'));
                      fieldValues.add(records.get('maintenanceperiod'));
                      fieldValues.add(records.get('lifespan'));
                      fieldValues.add(records.get('cost'));
-                     skuMap.put(sku,fieldValues);
+                	 fieldValues.add(records.get('sku')); 	
+                     skuMap.put(uniqueId,fieldValues);
                  }
             }
         else System.debug('Status Code isnt 200'+'\t'+response.getStatusCode());
@@ -47,8 +47,13 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                                                            Warehouse_SKU__c from product2 where warehouse_SKU__c!='']); 
         list<product2> newProducts= new list<product2>(); 
         for(product2 op2: existingProducts){
-            string existingSKU= op2.warehouse_SKU__c; 
-            if(processedMap.containsKey(existingSKU)){}
+            string existingSKU= op2.warehouse_SKU__c; //this has the id of the external system
+            if(processedMap.containsKey(existingSKU)){
+                SYstem.debug('Salesforce product record has the existing SKU'); 
+            }
+            else {
+                System.debug('Salesforce product record doesnt have the SKU');
+            }
         }
         
     } //end of updateRecords or method2
