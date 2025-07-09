@@ -16,10 +16,13 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
             external_nonJSON_list=(list<object>)JSON.deserializeUntyped(jsonResponse);
             for(object o: external_nonJSON_list){
                  map<string,object> external_object_Map= (map<string,object>)o;
-                 Boolean checked= (Boolean)external_object_Map.get('replacement');
+                 //Boolean checked= (Boolean)external_object_Map.get('replacement'); this is creating a system.typeexception
+                 object o1=external_object_Map.get('quantity');
+                 System.debug('RAW Replacement'+'\t'+o1);
+                 //system.debug('Replacement class'+'\t'+'hhe'+'\t'+o1 instanceof Integer);
                  string uniqueId= (string)external_object_Map.get('_id');
                      list<object> fieldValues= new List<object>();
-                	 fieldValues.add(external_object_Map.get('replacement'));
+                	 //fieldValues.add(external_object_Map.get('replacement'));
                      fieldValues.add(external_object_Map.get('quantity'));
                      fieldValues.add(external_object_Map.get('name'));
                      fieldValues.add(external_object_Map.get('maintenanceperiod'));
@@ -28,7 +31,7 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                 	 fieldValues.add(external_object_Map.get('sku')); 	
                      skuMap.put(uniqueId,fieldValues);
                  }
-            	 system.debug('Map size'+'\t'+skuMap.keySet().size());	
+            	 system.debug('External Map size'+'\t'+skuMap.keySet().size());	
             }
         else System.debug('Status Code isnt 200'+'\t'+response.getStatusCode());
         //ID jobId = System.enqueueJob(new WarehouseCalloutService());
@@ -48,21 +51,24 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                                                             from product2 
                                                             where Replacement_Part__c=true]);
         for(product2 ploop: queriedRecords){
-            if(string.isNotBlank(ploop.Warehouse_SKU__c)){
-                system.debug(ploop.name+'\t'+ploop.Warehouse_SKU__c);
-                if(mapPassedFromMethod1.containsKey(ploop.Warehouse_SKU__c)){
-                    System.debug('ID matched for external system');
-                    //map<string,object> productMap= (map<string,object>)mapPassedFromMethod1.get('_id');
-                    list<object>objectList=mapPassedFromMethod1.get(ploop.Warehouse_SKU__c);
-                    map<string,object>productMap=(map<string,object>)objectList[0];
-                    product2 tempproduct=new product2();
-                    tempproduct.Cost__c=(double)productMap.get('cost');
-                    tempproduct.ExternalId=(string)productMap.get('_id');
-                    System.debug('External ID'+'\t'+tempproduct.ExternalId+'\n'+'Cost'+tempproduct.Cost__c);
-                }
+            if(string.isNotEmpty(ploop.Warehouse_SKU__c) && mapPassedFromMethod1.containsKey(ploop.Warehouse_SKU__c)){
+                System.debug(ploop.Name+'\t'+ploop.Warehouse_SKU__c+'was found in external syatem');
+                list<object> objectList= (list<object>)mapPassedFromMethod1.get(ploop.Warehouse_SKU__c);
+                system.debug('objectList size'+objectList.size());
+                map<string,object> objectMap= (map<string,object>)objectList[0]; 
+                //ploop.Warehouse_SKU__c=(string)objectMap.get('sku');
+                string wareHouseId=(string)objectMap.get('_id');
+                boolean checked=true;
+                double quantity=(double)objectMap.get('quantity');
+                string productName=(string)objectMap.get('name');
+                double maintenance=(double)objectMap.get('maintenanceperiod');
+                double lifespan=(double)objectMap.get('lifespan');
+                double productCost=(double)objectMap.get('cost');
+                string warehouseSKU=(string)objectMap.get('sku'); 
+                System.debug('Updated SKU for'+'\t'+ploop.name+'is'+'\t'+wareHouseId);
             }
-            else if(string.isBlank(ploop.Warehouse_SKU__c)){
-                System.debug(ploop.Name+'\t'+'has either a null or empty sku'); 
+            else {
+                
             }
         } 
     }
