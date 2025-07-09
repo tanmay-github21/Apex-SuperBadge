@@ -37,33 +37,39 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
        updateRecords(skuMap);
     } //method1 end
     public void updateRecords(map<string,list<object>>mapPassedFromMethod1){
-        System.debug('Hello from updateRecords Method');
-        list<product2> salesforce_Products_List=new list<product2>([select 
-                                                           Replacement_Part__c, 
-                                                           Current_Inventory__c,
-                                                           name,
-                                                           Maintenance_Cycle__c,
-                                                           Lifespan_Months__c,
-                                                           cost__c,
-                                                           Warehouse_SKU__c from product2 where replacement_part__c=true]); 
-        System.debug('Products Retreived From Salesforce'+'\t'+salesforce_Products_List.size());
-        list<product2> newProducts= new list<product2>(); 
-        for(product2 loopVar: salesforce_Products_List){
-            string ext_Warehouse_SKU= loopVar.Warehouse_SKU__c;
-            if(mapPassedFromMethod1.containsKey(ext_Warehouse_SKU)){
-                System.debug('External System has the warehouse id and it is'+'\t'+ext_Warehouse_SKU);
-                system.debug('External system _id field value'+'\t'+ext_Warehouse_SKU); 
-                //list<object>objectList=mapPassedFromMethod1.get('sku');
-                //map <string,object> existingRecords= (map<string,object>)objectList[0];
-                //system.debug('Quantity record'+'\t'+existingRecords.get('quantity'));
-                //system.debug('SKU value'+'\t'+existingRecords.get('sku'));
+        System.debug('Entered into Method2');
+        list<product2>records2bUpdated, records2bInserted;
+        list <product2> queriedRecords= new list<product2>([select Name, warehouse_Sku__c, 
+                                                            ExternalId,
+                                                            Current_Inventory__c,
+                                                            Lifespan_Months__c,
+                                                            Maintenance_Cycle__c,
+                                                            StockKeepingUnit
+                                                            from product2 
+                                                            where Replacement_Part__c=true]);
+        for(product2 ploop: queriedRecords){
+            if(string.isNotBlank(ploop.Warehouse_SKU__c)){
+                system.debug(ploop.name+'\t'+ploop.Warehouse_SKU__c);
+                if(mapPassedFromMethod1.containsKey(ploop.Warehouse_SKU__c)){
+                    System.debug('ID matched for external system');
+                    //map<string,object> productMap= (map<string,object>)mapPassedFromMethod1.get('_id');
+                    list<object>objectList=mapPassedFromMethod1.get(ploop.Warehouse_SKU__c);
+                    map<string,object>productMap=(map<string,object>)objectList[0];
+                    product2 tempproduct=new product2();
+                    tempproduct.Cost__c=(double)productMap.get('cost');
+                    tempproduct.ExternalId=(string)productMap.get('_id');
+                    System.debug('External ID'+'\t'+tempproduct.ExternalId+'\n'+'Cost'+tempproduct.Cost__c);
+                }
             }
-            //else {
-              //  System.debug('External system doesnt have the id');
-            //}
-            
-        }
+            else if(string.isBlank(ploop.Warehouse_SKU__c)){
+                System.debug(ploop.Name+'\t'+'has either a null or empty sku'); 
+            }
+        } 
+    }
+} //class ends 
         
-    } //end of updateRecords or method2
-   
-}
+        
+    
+        //System.debug('Products Retreived From Salesforce'+'\t'+salesforce_Products_List.size());
+        //list<product2> newProducts= new list<product2>(); 
+        //for(product2 loopVar: salesforce_Products_List){}
