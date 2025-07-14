@@ -39,7 +39,12 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                 System.debug(loopProd.name+'\t'+'was found in the map'+'\t'+loopProd.Warehouse_SKU__c);
                 list<object>objectList= (list<object>)mapPassedFrom1.get(loopProd.Warehouse_SKU__c);
                 system.debug('ObjectList size'+'\t'+objectList.size());
-                map<string,list<object>> objectMap= (map<string,list<object>>)objectList[0];
+                for(object loopObject: objectList){
+                    if(loopObject instanceof map<string, list<object>>){
+                        System.debug('loopObject is of the type map<string,list<Object>>);
+                    }// //object is of the type map<string,list<object>>
+                } //loop object through objectList
+                //map<string,list<object>> objectMap= (map<string,list<object>>)objectList[0];
                 
             } //product warehouse isnt empty and map contains it
             else {
