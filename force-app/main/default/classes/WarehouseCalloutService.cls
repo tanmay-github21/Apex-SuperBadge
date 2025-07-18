@@ -50,7 +50,7 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                     if(loopObject instanceof Map<string,list<object>>){
                         System.debug(loopObject+'\t'+'instance of Map<string,list<Object>>');
                         Map<string,list<object>> objectMap= (map<string,List<object>>)loopObject;
-                    }
+                    }//fghty nska
                     else System.debug(loopObject+'\t'+'not instance of Map<string,list<object>');
                 } //For loop to check if object is instance of Map<string, list<object>>
                 //map<string,list<object>> objectMap= (map<string,list<object>>)objectList[0];
