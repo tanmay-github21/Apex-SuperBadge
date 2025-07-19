@@ -19,19 +19,8 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
             for(object o: external_nonJSON_list){
                  map<string,object> external_object_Map= (map<string,object>)o;
                  string externalId= (string)external_object_Map.get('_id');
-                 double quantity= (double)external_object_Map.get('quantity');
-                 string pname= (string)external_object_Map.get('name');
-                 integer mntPeriod= (integer)external_object_Map.get('maintenanceperiod');
-                 double lifespan= (double)external_object_Map.get('lifespan');
-                 double cost= (double)external_object_Map.get('cost');
-                 string sku= (string)external_object_Map.get('sku');
-                 fieldValues.add(quantity);
-                 fieldValues.add(pname);
-                 fieldValues.add(mntPeriod);
-                 fieldValues.add(lifespan);
-                 fieldValues.add(cost);
-                 fieldValues.add(sku);
-                 skuMap.put(externalId,fieldValues);
+                 map<string,object> fieldMap= new map<string,object>();//this will be added to the list
+                 //skuMap.put(externalId,fieldValues);
                 //Comment added for git
          }
             
