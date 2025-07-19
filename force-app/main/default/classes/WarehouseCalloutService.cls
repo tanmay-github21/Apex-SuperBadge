@@ -32,32 +32,24 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                  fieldValues.add(cost);
                  fieldValues.add(sku);
                  skuMap.put(externalId,fieldValues);
+                //Comment added for git
          }
             
        }
        method2(skuMap);
     }
     public static void method2(map<string, list<object>>mapPassedFrom1){
-        list<product2> sfProducts=new list<product2>([select warehouse_sku__c,name from product2 where
-                                                     replacement_Part__c=true]);
-        for(product2 loopProd: sfProducts){
-            if(string.isNotEmpty(loopProd.Warehouse_SKU__c) && mapPassedFrom1.containsKey(loopProd.Warehouse_SKU__c)){
-                System.debug(loopProd.name+'\t'+'was found in the map'+'\t'+loopProd.Warehouse_SKU__c);
-                list<object>objectList= (list<object>)mapPassedFrom1.get(loopProd.Warehouse_SKU__c);
-                system.debug('ObjectList size'+'\t'+objectList.size());
-                system.debug('ObjectList[0]'+'\t'+objectList[0]);
-                for(object loopObject: objectList){
-                    if(loopObject instanceof Map<string,list<object>>){
-                        System.debug(loopObject+'\t'+'instance of Map<string,list<Object>>');
-                        Map<string,list<object>> objectMap= (map<string,List<object>>)loopObject;
-                    }//fghty nska
-                    else System.debug(loopObject+'\t'+'not instance of Map<string,list<object>');
-                } //For loop to check if object is instance of Map<string, list<object>>
-                //map<string,list<object>> objectMap= (map<string,list<object>>)objectList[0];
-            } //product warehouse isnt empty and map contains it
-            else {
-                //System.debug(loopProd.name+'\t'+'Isnt in map');
-            } //product warehouse is empty and isn't contained in the map
-        } //loop through salesforce products
-    }//method2 closed
-}//class closed
+        integer q1=0, q2=0; 
+        list<product2> eprd=new list<product2>();
+        eprd=[select name, warehouse_Sku__c, current_Inventory__c,replacement_Part__c from product2]; 
+        for(product2 p:eprd){
+            if(string.isNotEmpty(p.Warehouse_SKU__c) && mapPassedFrom1.containsKey(p.Warehouse_SKU__c)){
+                list<object>objects=(list<object>)mapPassedFrom1.get('externalId');
+                for(object o1:objects){
+                    if(o1 instanceof map<string,list<object>>){System.debug('instance of objects');}
+                }
+            }
+            else{}
+        } //loop through Products
+    }//end of method2
+}//end of class
