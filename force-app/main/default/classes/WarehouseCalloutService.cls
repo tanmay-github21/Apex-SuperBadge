@@ -20,7 +20,11 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                  map<string,object> external_object_Map= (map<string,object>)o;
                  string externalId= (string)external_object_Map.get('_id');
                  map<string,object> fieldMap= new map<string,object>();//this will be added to the list
-                 //skuMap.put(externalId,fieldValues);
+                 fieldMap.put('quantity',Double.valueof(string.valueof(external_Object_Map.get('quantity'))));
+                string typeof= (fieldMap.get('quantity') instanceof double) ? 'Double':
+                fieldMap.get('quantity') instanceof Decimal ? 'Decimal' :fieldMap.get('quantity') instanceof String?'String':'Unknown';
+                SYstem.debug('FieldMap Quantity instanceof'+'\t'+typeof);
+                //skuMap.put(externalId,fieldValues);
                 //Comment added for git
          }
             
