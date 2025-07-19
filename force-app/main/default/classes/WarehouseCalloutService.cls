@@ -17,16 +17,27 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
             string jsonResponse=response.getBody();
             external_nonJSON_list=(list<object>)JSON.deserializeUntyped(jsonResponse);
             for(object o: external_nonJSON_list){
+                String typeOf= (o instanceof map<string,List<object>>)? 'Its instance of map<string,list<object>':
+                o instanceof list<object> ?'Its list<object>':'Type is unknown';
+                System.debug('Instance of response received is'+'\t'+typeOf); 
                  map<string,object> external_object_Map= (map<string,object>)o;
-                 string externalId= (string)external_object_Map.get('_id');
                  map<string,object> fieldMap= new map<string,object>();//this will be added to the list
-                 fieldMap.put('quantity',Double.valueof(string.valueof(external_Object_Map.get('quantity'))));
-                string typeof= (fieldMap.get('quantity') instanceof double) ? 'Double':
-                fieldMap.get('quantity') instanceof Decimal ? 'Decimal' :fieldMap.get('quantity') instanceof String?'String':'Unknown';
-                SYstem.debug('FieldMap Quantity instanceof'+'\t'+typeof);
-                //skuMap.put(externalId,fieldValues);
-                //Comment added for git
-         }
+                fieldMap.put('quantity',Double.valueof(string.valueof(external_Object_Map.get('quantity'))));
+                fieldMap.put('name',string.valueof(external_Object_Map.get('name')));
+                fieldMap.put('maintenanceperiod',double.valueof(string.valueof(external_Object_Map.get('maintenanceperiod'))));
+                fieldMap.put('lifespan',double.valueof(string.valueof(external_Object_Map.get('lifespan'))));
+                fieldMap.put('cost',decimal.valueof(string.valueof(external_Object_Map.get('cost'))));
+                fieldMap.put('sku',string.valueof(external_Object_Map.get('sku')));
+                string externalId=string.valueof(external_Object_Map.get('_id'));
+                if(!skuMap.containsKey(externalId)){
+                    skuMap.put(externalId, new list<map<string,object>>());
+                }
+                skuMap.get(externalId).add(fieldMap);
+           }
+            for(string s:skuMap.keySet()){
+                System.debug('KeySet'+'\t'+s); 
+            }
+            for(object o: skuMap.values()) System.debug('Values'+'\t'+o);
             
        }
        method2(skuMap);
