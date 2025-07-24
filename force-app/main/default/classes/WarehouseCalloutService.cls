@@ -34,19 +34,35 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
         }//status code is 200
         method2(skuMap);     
     }
-    public void method2(map<string,list<object>>mapExecuteMethod){
-        List<product2> products=new list<product2>();
-	    products=[select name, warehouse_Sku__c from product2 where replacement_Part__c=true];
-        for(Product2 p2: products){
-            if(string.isNotEmpty(p2.Warehouse_SKU__c) && mapExecuteMethod.containsKey(p2.Warehouse_SKU__c)){
-                for(String value: mapExecuteMethod.keySet()){
-                        
-                }
-            } // map conntains the key
-            else {
-                
-            } //map doesn't contains key
+    public void method2(map<string,List<object>> passedMap){
+        List<product2> products= new list<product2>([select name, warehouse_Sku__c from product2 where replacement_Part__c=true]);
+        map<id,Product2>xproductMap= new map<id,product2>(); 
+        try{
+            for(Product2 p:products){
+                if(string.isNotBlank(p.Warehouse_SKU__c) && passedMap.containsKey(p.Warehouse_SKU__c)){
+                    System.debug('Warehouse'+'\t'+p.Warehouse_SKU__c);
+                    Object obj=passedMap.get(p.Warehouse_SKU__c);
+                    if(obj instanceof list<object>){
+                        list<object> raw=(list<object>)obj;
+                        for(object o:raw)
+                            SYstem.debug((o instanceof map<string,object>)?'Map<string,object>':'No map<string,object>');
+                    }
+                    /*list<object>objects=passedMap.get(p.Warehouse_SKU__c);
+                    for(object o: objects){
+                          map<string,object>objectMap= (map<string,Object>) o; 
+                          Product2 tempProd= new Product2(); 
+                          tempProd.ExternalId=string.valueof(objectMap.get('identifier'));
+                          System.debug('externalId'+'\t'+tempProd.ExternalId);
+                    }*/
+                }//map has the value
+                else{}    
+            }//outter for loop
+        } //try block
+        catch(exception e){
+            system.debug('Error Occured and the message is'+'\t'+e.getMessage()+'\n'+
+                        'Error Line number'+'\t'+e.getLineNumber()+'\n'+
+                        'Error Caused by'+'\t'+e.getCause()+'\n'+
+                        'Error stackTracestring'+'\t'+e.getStackTraceString());
         }
-    } //method2
-        
+    } //Method 2 completes 
 }
