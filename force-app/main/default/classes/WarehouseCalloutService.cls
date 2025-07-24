@@ -35,33 +35,18 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
         method2(skuMap);     
     }
     public void method2(map<string,list<object>>mapExecuteMethod){
-        set<string> externalIds=mapExecuteMethod.keySet();
-        map<string,product2>existingProductmap= new map<string,product2>(); 
-        for(product2 loopp: [select name,warehouse_Sku__c,current_Inventory__c from Product2 where replacement_part__c=true and 
-                            warehouse_Sku__c!='' and warehouse_Sku__c!=null])  existingProductMap.put(loopp.warehouse_Sku__c,loopp);
-        system.debug(existingProductMap.keySet().size());
-        list<product2> products2bUpserted= new list<product2>(); 
-        for(string exId : mapExecuteMethod.keySet()){
-            list<object> externalObject=mapExecuteMethod.get(exId); 
-            for(object o1:externalObject){
-                map<string,object> externalData=(map<string,object>)o1; 
-                double extqnty= double.valueof(string.valueof(externalData.get('quantity')));
-                System.debug('Hello');
-                SYstem.debug((externalData.get('quantity') instanceof Double)? 'Double':'Not Double');
-                /*if(existingProductmap.containsKey(exId)){
-                    product2 existingProduct=existingProductmap.get(exId); 
-                    double quantity= (existingProduct.Current_Inventory__c !=Null) ? existingProduct.Cost__c: 0.0;
-                    existingProduct.Current_Inventory__c = (quantity-extqnty <0)?0:quantity-extqnty; 
-                    existingProduct.Warehouse_SKU__c=exId;
-                    existingProduct.StockKeepingUnit=string.valueof(externalData.get('sku'));
-                    existingProduct.ExternalId=exId;
-                    existingProduct.Cost__c=decimal.valueof(string.valueof(externalData.get('cost')));
-                    existingProduct.Maintenance_Cycle__c=double.valueof(string.valueof(externalData.get('maintenancePeriod'))); 
-                    existingProduct.Lifespan_Months__c=double.valueof(string.valueof(externalData.get('lifespan'))); 
-                    products2bUpserted.add(existingProduct); 
-                }//map has the external id*/
-                //for(product2 p:products2bUpserted)System.debug('Products ready to be upserted'+'\t'+p); 
-            } //looping through the list of objects
-        } //looping through map.keySet()
-    }
+        List<product2> products=new list<product2>();
+	    products=[select name, warehouse_Sku__c from product2 where replacement_Part__c=true];
+        for(Product2 p2: products){
+            if(string.isNotEmpty(p2.Warehouse_SKU__c) && mapExecuteMethod.containsKey(p2.Warehouse_SKU__c)){
+                for(String value: mapExecuteMethod.keySet()){
+                        
+                }
+            } // map conntains the key
+            else {
+                
+            } //map doesn't contains key
+        }
+    } //method2
+        
 }
