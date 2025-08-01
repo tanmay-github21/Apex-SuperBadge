@@ -31,7 +31,6 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
         for(Object o: externalList){
              map<string,object> internalMap= (map<string,object>)o; 
              string recid=string.valueof(internalMap.get('_id'));
-             System.debug('External Record Id'+'\t'+recid); 
              externalProductMap.put(recid,internalMap); 
         }
         try{
@@ -39,23 +38,25 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
             for(Product2 p2:products){
                 string sku=p2.Warehouse_SKU__c;
                 if(string.isNotBlank(sku) && externalProductMap.containsKey(sku)){
-                    System.debug(p2.name+'\t'+sku+'\t'+'is in the map');
+                    SYstem.debug(p2.name+'\t'+'Has value in map as'+'\t'+p2.Warehouse_SKU__c); 
                     map<string,object> singleObjMap= externalProductMap.get(sku); 
                     Product2 tempProd= new Product2(); 
-                    tempProd.Cost__c= decimal.valueof(string.valueof(singleObjMap.get('cost'))); 
-                    tempProd.ExternalId=string.valueof(singleObjMap.get('_id'));
-                    double existing= (p2.Current_Inventory__c==null)? 0.0:p2.Current_Inventory__c;
-                    System.debug(p2.Name+'\t'+'is in map'+'\t'+existing); 
-                    double consumed=double.valueof(string.valueof(singleObjMap.get('quantity')));
-                    double updatedQ= (existing-consumed <0)? 0.0: existing-consumed; 
-                    tempProd.Current_Inventory__c=updatedQ; 
-                    tempProd.Maintenance_Cycle__c=double.valueof(string.valueof(singleObjMap.get('maintenanceperiod')));
-                    tempProd.Lifespan_Months__c=double.valueof(string.valueof('lifespan')); 
+                    tempProd.Warehouse_SKU__c=string.valueof(singleObjMap.get('_id'));
                     tempProd.Replacement_Part__c=true;
-                    tempProd.operation__c='Updated';
+                    double existing=(p2.Current_Inventory__c==null)? 0.0:p2.Current_Inventory__c;
+                    double consumed=(singleObjMap.get('quantity')==null)?0.0:double.valueof(string.valueof(singleObjMap.get('quantity')));
+                    tempProd.Current_Inventory__c=(existing-consumed <0)?0.0:existing-consumed; 
+                    SYstem.debug('From Map Quantity'+'\t'+consumed+'\n'+
+                                'Record quantity'+'\t'+existing+'\n'+ 'Updated Quantity'+'\t'+tempProd.Current_Inventory__c);
+                    
+                    
+                    tempProd.name= (singleObjMap.get('name')==null)? '':string.valueof(singleObjMap.get('name'));
+                    tempProd.Maintenance_Cycle__c=(singleObjMap.get('maintenanceperiod')==null)? 0.0:double.valueof(string.valueof(singleObjMap.get('maintenanceperiod')));
+                    tempProd.Lifespan_Months__c=(singleObjMap.get('lifespan')==null)? 0.0:double.valueof(string.valueof(singleObjMap.get('lifespan')));
+                    tempProd.Cost__c=decimal.valueof(string.valueof(singleObjMap.get('cost')));
                     updates.add(tempProd);
-                    existingSKU.add(tempProd.Warehouse_SKU__c);
-                    SYstem.debug(existingSKU);
+                    existingSKU.add(string.valueof(singleObjMap.get('_id')));
+                    SYstem.debug('External ID Set at the end has value as'+'\t'+existingSKU);
                 }//map has the value
                 else{
                     for(string extId:externalProductMap.keySet()){
@@ -63,14 +64,15 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                             System.debug('Insert Product');
                             map<string,Object>insertMap=externalProductMap.get(extId);
                             Product2 insertP=new product2();
+                            insertP.Name=(insertMap.get('name')==null)?p2.name:string.valueof(insertMap.get('name'));
                             insertP.Warehouse_SKU__c=string.valueof(insertMap.get('_id'));
                             insertp.Replacement_Part__c=true;
-                            insertp.Current_Inventory__c=double.valueof(string.valueof(insertMap.get('quantity')));
+                            insertp.Current_Inventory__c=(insertMap.get('quantity')==null)? 0.0:double.valueof(string.valueof(insertMap.get('quantity')));
                             insertP.name=string.valueof(insertMap.get('name'));
-                            insertP.Maintenance_Cycle__c=double.valueof(string.valueof(insertMap.get('maintenanceperiod')));
-                            insertp.Lifespan_Months__c=double.valueof(string.valueof(insertMap.get('lifespan')));
-                            insertp.Cost__c=decimal.valueof(string.valueof(insertMap.get('cost')));
-                            insertp.operation__c='Insert';
+                            insertP.Maintenance_Cycle__c=(insertMap.get('maintenanceperiod')==null)? 0.0:double.valueof(string.valueof(insertMap.get('maintenanceperiod')));
+                            //insertp.Lifespan_Months__c=(insertMap.get('lifespan')==null)? 0.0:double.valueof(string.valueof(insertMap.get('lifespan')));
+                            insertp.Cost__c=(insertMap.get('cost')==null)? 0.0:decimal.valueof(string.valueof(insertMap.get('cost')));
+                            insertP.Operation__c='Insert';
                             updates.add(insertP);
                         }
                     }
@@ -84,7 +86,9 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
             SYstem.debug('Erorr Occured with following details'+'\n'+
                          'Error name'+'\t'+e.getTypeName()+'\n'+
                          'Error line'+'\t'+e.getLineNumber()+'\n'+
-                         'Cause of error'+'\t'+e.getCause()); 
+                         'Cause of error'+'\t'+e.getCause()+'\n'+
+                         'StackTrace'+'\t'+e.getStackTraceString()+'\n'+
+                        'Error Message'+'\t'+e.getMessage()); 
         } // catch exception ends
     } //Method 2 completes 
 }
