@@ -19,7 +19,7 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
         method2(payLoadMap);
     }
     public void method2(map<string,list<Object>>payloadMap){
-        List<product2> updates=new list<Product2>();
+        List<product2> upserts=new list<Product2>();
         List<product2> products= new list<product2>([select name, 
                                                      warehouse_Sku__c,
                                                      current_Inventory__c,
@@ -31,60 +31,60 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
         for(Object o: externalList){
              map<string,object> internalMap= (map<string,object>)o; 
              string recid=string.valueof(internalMap.get('_id'));
-             System.debug('External Record Id'+'\t'+recid); 
              externalProductMap.put(recid,internalMap); 
         }
         try{
+            integer i,k,j=0;
             set<string> existingSKU=new set<string>(); 
             for(Product2 p2:products){
                 string sku=p2.Warehouse_SKU__c;
-                if(string.isNotBlank(sku) && externalProductMap.containsKey(sku)){
-                    System.debug(p2.name+'\t'+sku+'\t'+'is in the map');
-                    map<string,object> singleObjMap= externalProductMap.get(sku); 
-                    Product2 tempProd= new Product2(); 
-                    tempProd.Cost__c= decimal.valueof(string.valueof(singleObjMap.get('cost'))); 
-                    tempProd.ExternalId=string.valueof(singleObjMap.get('_id'));
-                    double existing= (p2.Current_Inventory__c==null)? 0.0:p2.Current_Inventory__c;
-                    System.debug(p2.Name+'\t'+'is in map'+'\t'+existing); 
-                    double consumed=double.valueof(string.valueof(singleObjMap.get('quantity')));
-                    double updatedQ= (existing-consumed <0)? 0.0: existing-consumed; 
-                    tempProd.Current_Inventory__c=updatedQ; 
-                    tempProd.Maintenance_Cycle__c=double.valueof(string.valueof(singleObjMap.get('maintenanceperiod')));
-                    tempProd.Lifespan_Months__c=double.valueof(string.valueof('lifespan')); 
-                    tempProd.Replacement_Part__c=true;
-                    tempProd.operation__c='Updated';
-                    updates.add(tempProd);
-                    existingSKU.add(tempProd.Warehouse_SKU__c);
-                    SYstem.debug(existingSKU);
-                }//map has the value
+                if(string.isNotBlank(sku) && externalProductMap.containskey(sku)){
+                    System.debug(p2.name+'\t'+'Update');
+                    Product2 up2=new product2();
+                    string nameString=string.valueof(externalProductMap.get('name'));
+                    up2.Name=(string.isNotBlank(string.valueof(externalProductMap.get('name'))))?string.valueof(externalProductMap.get('name')):'Name is blank';
+                    up2.ExternalId=string.valueof(externalProductMap.get('name'));
+                    double existing=p2.Current_Inventory__c;
+                    double consumed=(string.isNotBlank(string.valueof(externalProductMap.get('quantity'))))?double.valueof(string.valueof(externalProductMap.get('quantity'))):0.0;
+                    up2.Current_Inventory__c=(existing-consumed <0)?0.0:existing-consumed; 
+                    up2.Cost__c=(string.isNotBlank(string.valueof(externalProductMap.get('cost')))?decimal.valueof(string.valueof(externalProductMap.get('cost'))):0.0);
+                    up2.Maintenance_Cycle__c=(string.isNotBlank(string.valueof(externalProductMap.get('maintenanceperiod')))?double.valueof(string.valueof(externalProductMap.get('maintenanceperiod'))):0.0);
+                    up2.Lifespan_Months__c=(string.isNotBlank(string.valueof(externalProductMap.get('lifespan')))?double.valueof(string.valueof(externalProductMap.get('lifespan'))):0.0);
+                    up2.StockKeepingUnit=(string.isNotEmpty(string.valueof(externalProductMap.get('sku')))?string.valueof(externalProductMap.get('sku')):'');
+                    up2.Operation__c='Update';
+                    up2.Replacement_Part__c=true;
+                    upserts.add(up2);
+                    System.debug(p2.Name+'\t'+'update size'+'\t'+upserts.size());
+                } //string isnt blank and is in map
                 else{
-                    for(string extId:externalProductMap.keySet()){
-                        if(!existingSKU.contains(extid)){
-                            System.debug('Insert Product');
-                            map<string,Object>insertMap=externalProductMap.get(extId);
-                            Product2 insertP=new product2();
-                            insertP.Warehouse_SKU__c=string.valueof(insertMap.get('_id'));
-                            insertp.Replacement_Part__c=true;
-                            insertp.Current_Inventory__c=double.valueof(string.valueof(insertMap.get('quantity')));
-                            insertP.name=string.valueof(insertMap.get('name'));
-                            insertP.Maintenance_Cycle__c=double.valueof(string.valueof(insertMap.get('maintenanceperiod')));
-                            insertp.Lifespan_Months__c=double.valueof(string.valueof(insertMap.get('lifespan')));
-                            insertp.Cost__c=decimal.valueof(string.valueof(insertMap.get('cost')));
-                            insertp.operation__c='Insert';
-                            updates.add(insertP);
-                        }
-                    }
-                }//map doesn't have the value
-                upsert updates;
-                SYstem.debug('Sizeof operation'+'\t'+updates.size());
+                    Product2 ip2=new product2();
+                    System.debug(p2.name+'\t'+'insert');
+                    string trimedName='';
+                    ip2.name=(string.isNotBlank(string.valueof(externalProductMap.get('name'))))?string.valueof(externalProductMap.get('name')):'Name is blank';
+                    ip2.Warehouse_SKU__c=(string.isNotBlank(string.valueof(externalProductMap.get('_id'))))?string.valueof(externalProductMap.get('_id')):null;
+                    ip2.ExternalId=(string.isNotBlank(string.valueof(externalProductMap.get('_id'))))?string.valueof(externalProductMap.get('_id')):null;
+                    ip2.Current_Inventory__c=(string.isNotBlank(string.valueof(externalProductMap.get('quantity'))))?double.valueof(string.valueof(externalProductMap.get('quantity'))):0.0;
+                    ip2.Cost__c=(string.isNotBlank(string.valueof(externalProductMap.get('cost')))?decimal.valueof(string.valueof(externalProductMap.get('cost'))):0.0);
+                    ip2.Maintenance_Cycle__c=(string.isNotBlank(string.valueof(externalProductMap.get('maintenanceperiod')))?double.valueof(string.valueof(externalProductMap.get('maintenanceperiod'))):0.0);
+                    ip2.Lifespan_Months__c=(string.isNotBlank(string.valueof(externalProductMap.get('lifespan')))?double.valueof(string.valueof(externalProductMap.get('lifespan'))):0.0);
+                    ip2.StockKeepingUnit=(string.isNotEmpty(string.valueof(externalProductMap.get('sku')))?string.valueof(externalProductMap.get('sku')):'');
+                    ip2.Operation__c='Insert';
+                    ip2.Replacement_Part__c=true;
+                    upserts.add(ip2);
+                    System.debug(p2.name+'\t'+'Insert size'+'\t'+upserts.size());
+                } //string is either blank or isnt in map
             }
+            upsert upserts;
+            System.debug('Final upserts size'+upserts.size());
         }//try block ends
         
         catch(exception e){
             SYstem.debug('Erorr Occured with following details'+'\n'+
                          'Error name'+'\t'+e.getTypeName()+'\n'+
                          'Error line'+'\t'+e.getLineNumber()+'\n'+
-                         'Cause of error'+'\t'+e.getCause()); 
+                         'Cause of error'+'\t'+e.getCause()+'\n'+
+                         'StackTrace'+'\t'+e.getStackTraceString()+'\n'+
+                        'Error Message'+'\t'+e.getMessage()); 
         } // catch exception ends
     } //Method 2 completes 
 }
