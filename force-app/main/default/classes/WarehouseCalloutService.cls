@@ -27,64 +27,36 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                                                      lifespan_Months__c,
                                                      maintenance_Cycle__c, externalId from product2 where replacement_Part__c=true]);
         list<object> externalList=payLoadMap.get('externalList');
-        Map<string, map<string,object>> externalProductMap= new map<String,map<string,object>>();
-        for(Object o: externalList){
-             map<string,object> internalMap= (map<string,object>)o; 
-             string recid=string.valueof(internalMap.get('_id'));
-             externalProductMap.put(recid,internalMap); 
-        }
-        try{
-            integer i,k,j=0;
-            set<string> existingSKU=new set<string>(); 
-            for(Product2 p2:products){
-                string sku=p2.Warehouse_SKU__c;
-                if(string.isNotBlank(sku) && externalProductMap.containskey(sku)){
-                    System.debug(p2.name+'\t'+'Update');
-                    Product2 up2=new product2();
-                    string nameString=string.valueof(externalProductMap.get('name'));
-                    up2.Name=(string.isNotBlank(string.valueof(externalProductMap.get('name'))))?string.valueof(externalProductMap.get('name')):'Name is blank';
-                    up2.ExternalId=string.valueof(externalProductMap.get('name'));
-                    double existing=p2.Current_Inventory__c;
-                    double consumed=(string.isNotBlank(string.valueof(externalProductMap.get('quantity'))))?double.valueof(string.valueof(externalProductMap.get('quantity'))):0.0;
-                    up2.Current_Inventory__c=(existing-consumed <0)?0.0:existing-consumed; 
-                    up2.Cost__c=(string.isNotBlank(string.valueof(externalProductMap.get('cost')))?decimal.valueof(string.valueof(externalProductMap.get('cost'))):0.0);
-                    up2.Maintenance_Cycle__c=(string.isNotBlank(string.valueof(externalProductMap.get('maintenanceperiod')))?double.valueof(string.valueof(externalProductMap.get('maintenanceperiod'))):0.0);
-                    up2.Lifespan_Months__c=(string.isNotBlank(string.valueof(externalProductMap.get('lifespan')))?double.valueof(string.valueof(externalProductMap.get('lifespan'))):0.0);
-                    up2.StockKeepingUnit=(string.isNotEmpty(string.valueof(externalProductMap.get('sku')))?string.valueof(externalProductMap.get('sku')):'');
-                    up2.Operation__c='Update';
-                    up2.Replacement_Part__c=true;
-                    upserts.add(up2);
-                    System.debug(p2.Name+'\t'+'update size'+'\t'+upserts.size());
-                } //string isnt blank and is in map
-                else{
-                    Product2 ip2=new product2();
-                    System.debug(p2.name+'\t'+'insert');
-                    string trimedName='';
-                    ip2.name=(string.isNotBlank(string.valueof(externalProductMap.get('name'))))?string.valueof(externalProductMap.get('name')):'Name is blank';
-                    ip2.Warehouse_SKU__c=(string.isNotBlank(string.valueof(externalProductMap.get('_id'))))?string.valueof(externalProductMap.get('_id')):null;
-                    ip2.ExternalId=(string.isNotBlank(string.valueof(externalProductMap.get('_id'))))?string.valueof(externalProductMap.get('_id')):null;
-                    ip2.Current_Inventory__c=(string.isNotBlank(string.valueof(externalProductMap.get('quantity'))))?double.valueof(string.valueof(externalProductMap.get('quantity'))):0.0;
-                    ip2.Cost__c=(string.isNotBlank(string.valueof(externalProductMap.get('cost')))?decimal.valueof(string.valueof(externalProductMap.get('cost'))):0.0);
-                    ip2.Maintenance_Cycle__c=(string.isNotBlank(string.valueof(externalProductMap.get('maintenanceperiod')))?double.valueof(string.valueof(externalProductMap.get('maintenanceperiod'))):0.0);
-                    ip2.Lifespan_Months__c=(string.isNotBlank(string.valueof(externalProductMap.get('lifespan')))?double.valueof(string.valueof(externalProductMap.get('lifespan'))):0.0);
-                    ip2.StockKeepingUnit=(string.isNotEmpty(string.valueof(externalProductMap.get('sku')))?string.valueof(externalProductMap.get('sku')):'');
-                    ip2.Operation__c='Insert';
-                    ip2.Replacement_Part__c=true;
-                    upserts.add(ip2);
-                    System.debug(p2.name+'\t'+'Insert size'+'\t'+upserts.size());
-                } //string is either blank or isnt in map
+        Map<string, map<string,object>>trimmedExternalMap= new map<String,map<string,object>>();
+        for(object obj:externalList){
+              map<string,object> rawMap= (map<string,object>)obj;
+              map<string,object> cleanedMap= new map<string,object>();
+             for(string key:rawMap.keySet()){
+                 cleanedMap.put(key.trim(),rawMap.get(key));
+             }
+            string sku=string.valueof(cleanedMap.get('_id')).trim();
+            system.debug('SKU Value'+'\t'+sku);
+            trimmedExternalMap.put(sku,cleanedMap);
+            map<string,object>externalData= trimmedExternalMap.get(sku);
+            integer i=0,j=0,k=0;
+            try{
+                for(product2 p2:products){
+                    if(string.isBlank(p2.Warehouse_SKU__c)){
+                        system.debug(p2.name+'\t'+'Warehouse blank');
+                    }
+                    else if(string.isNotBlank(p2.Warehouse_SKU__c) && trimmedExternalMap.containsKey(p2.Warehouse_SKU__c)){
+                        system.debug(p2.name+'\t'+'isnt blank and present in map'); 
+                    }
+                } //loop through queries product records
             }
-            upsert upserts;
-            System.debug('Final upserts size'+upserts.size());
-        }//try block ends
+            catch(exception r){
+                System.debug('Error Occured on line'+'\t'+r.getLineNumber()+'\n'+
+                            'Type of error'+'\t'+r.getTypeName()+'\n'+
+                            'Reason for error'+'\t'+r.getCause()+'\n'+
+                            'Error Message'+'\t'+r.getMessage()+'\n'+
+                            'Stack trace string'+'\t'+r.getStackTraceString());
+            }
+        } //loop though object list
         
-        catch(exception e){
-            SYstem.debug('Erorr Occured with following details'+'\n'+
-                         'Error name'+'\t'+e.getTypeName()+'\n'+
-                         'Error line'+'\t'+e.getLineNumber()+'\n'+
-                         'Cause of error'+'\t'+e.getCause()+'\n'+
-                         'StackTrace'+'\t'+e.getStackTraceString()+'\n'+
-                        'Error Message'+'\t'+e.getMessage()); 
-        } // catch exception ends
     } //Method 2 completes 
 }
