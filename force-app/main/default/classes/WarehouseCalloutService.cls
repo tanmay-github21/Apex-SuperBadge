@@ -18,8 +18,12 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
             for(Object o:deserializedObjects){
                 map<string,object>xrecord= (map<string,object>)o; 
                 for(string loops:xrecord.keySet()){
-                    string nk= loops.replaceAll('(\\s+)','');
-                    System.debug('Original length'+'\t'+loops.length()+'\t'+'Trimmed length'+'\t'+nk.length());
+                    string k='PUT_YOUR_KEY_HERE';
+                    System.debug('orig="' + k + '" len=' + k.length());
+                    for(integer i=0; i<k.length();i++){
+                        integer c= (integer)k.charAt(i);
+                        System.debug(i + ' → code:' + c + ' char:"' + k.substring(i,i+1) + '"');
+                    }
                 }
             }
         }
