@@ -34,9 +34,12 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
               map<string,object> rawMap= (map<string,object>)obj;
               map<string,object> cleanedMap= new map<string,object>();
              for(string key:rawMap.keySet()){
-                 cleanedMap.put(key.trim(),rawMap.get(key));
+                 //boolean whiteSpace=key.contains(' '); this works only if it contains normal spacebar whitespace
+                 string spaceRemoved= key.replaceAll('(\\s+)','');
+                 cleanedMap.put(spaceRemoved,rawMap.get(key));
+                 System.debug('Original length'+'\t'+key.length()+'\t'+'Trimmed Length'+'\t'+spaceRemoved.length());
              }
-            string sku=string.valueof(cleanedMap.get('_id')).trim();
+            /*string sku=string.valueof(cleanedMap.get('_id')).trim();
             system.debug('SKU Value'+'\t'+sku);
             trimmedExternalMap.put(sku,cleanedMap);
             map<string,object>externalData= trimmedExternalMap.get(sku);
@@ -62,7 +65,7 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                             'Reason for error'+'\t'+r.getCause()+'\n'+
                             'Error Message'+'\t'+r.getMessage()+'\n'+
                             'Stack trace string'+'\t'+r.getStackTraceString());
-            }
+            }*/
         } //loop though object list
         
     } //Method 2 completes 
