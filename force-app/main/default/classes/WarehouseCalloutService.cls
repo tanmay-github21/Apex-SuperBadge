@@ -14,8 +14,8 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
         if(response.getstatusCode() ==200){
             list<object> deserializedObjects=(list<object>)JSON.deserializeUntyped(response.getBody());
             payLoadMap.put('externalList',deserializedObjects); 
-            
         }
+        System.debug(payLoadMap);
         method2(payLoadMap);
     }
     public void method2(map<string,list<Object>>payloadMap){
@@ -26,6 +26,8 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                                                      cost__c,
                                                      lifespan_Months__c,
                                                      maintenance_Cycle__c, externalId from product2 where replacement_Part__c=true]);
+        set<string>sfrecords=new set<string>();// contains sf records where warehouse isnt blank
+        set<string>externalrecords= new set<string>();//contains all records in external system
         list<object> externalList=payLoadMap.get('externalList');
         Map<string, map<string,object>>trimmedExternalMap= new map<String,map<string,object>>();
         for(object obj:externalList){
@@ -41,13 +43,18 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
             integer i=0,j=0,k=0;
             try{
                 for(product2 p2:products){
-                    if(string.isBlank(p2.Warehouse_SKU__c)){
-                        system.debug(p2.name+'\t'+'Warehouse blank');
+                    if(string.isnotblank(p2.Warehouse_SKU__c)){
+                        sfrecords.add(p2.Warehouse_SKU__c);
+                        system.debug(p2.name+'\t'+'warehouse isnt blank'+'\t'+sfrecords.size());
                     }
-                    else if(string.isNotBlank(p2.Warehouse_SKU__c) && trimmedExternalMap.containsKey(p2.Warehouse_SKU__c)){
-                        system.debug(p2.name+'\t'+'isnt blank and present in map'); 
+                }
+                for(string s:trimmedExternalMap.keySet()){
+                    map<string,object> singleMap= trimmedExternalMap.get(s);
+                    Product2 up2= new Product2();
+                    if(sfrecords.contains(s)){
+                        System.debug('Salesforce warehouse id matches with external data');
                     }
-                } //loop through queries product records
+                }
             }
             catch(exception r){
                 System.debug('Error Occured on line'+'\t'+r.getLineNumber()+'\n'+
