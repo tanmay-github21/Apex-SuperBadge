@@ -39,38 +39,18 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
                  if(!objectList.isEmpty())
                      singleObjMap.put(s,objectList[0]);
              }
-            list<product2> sfrecords= new list<product2>([select name,warehouse_Sku__c,
+             list<product2> sfrecords= new list<product2>([select name,warehouse_Sku__c,
                                       externalId,lifespan_Months__c,cost__c,
                                       maintenance_Cycle__c,replacement_Part__c,
                                       stockKeepingUnit, current_Inventory__c from Product2]);
-            map<string,Product2> sfProductMap=new map<string,product2>();
-            string externalSku=string.valueof(singleObjMap.get('id'));
-            SYstem.debug('External id key'+'\t'+externalSku);
-            integer e=0;
-            for(Product2 loopProd:sfrecords){
-                
-                string name=loopProd.name,warehouse= (string.isBlank(loopProd.Warehouse_SKU__c))?'empty':loopProd.Warehouse_SKU__c;
-                decimal cost=(loopProd.Cost__c ==null)?0:loopProd.Cost__c;
-                double lifePeriod=(loopProd.Lifespan_Months__c ==null)?0:loopProd.Lifespan_Months__c;
-                double repairtime=(loopProd.Maintenance_Cycle__c ==null)?0:loopProd.Maintenance_Cycle__c;
-                double count=(loopProd.Current_Inventory__c==null)?0:loopProd.Current_Inventory__c; 
-                System.debug('Tempvar name'+'\t'+name+'\n'+
-                            'Tempvar warehouse'+'\t'+warehouse+'\n'+
-                            'Tempvar cost'+'\t'+cost+'\n'+
-                            'Tempvar lifeperiod'+'\t'+lifePeriod+'\n'+
-                            'Tempvar quantity'+'\t'+count+'\n'+
-                            'Tempvar repairtime'+'\t'+repairtime);
-                e++;
-                if(e==4)break;
-                if(warehouse !='empty' && externalSku ==warehouse){
-                    System.debug(name+'\t'+warehouse+'\t'+'present in external system');
-                }
-                else {
-                    System.debug(name+'\t'+warehouse+'\t'+'not in external system');
-                }
-                
-            }
-            //upsert upsertMap.values(); 
+             for(product2 loopProd:sfrecords){
+                 string warehouseId=(string.isBlank(loopProd.Warehouse_SKU__c)?'empty':loopProd.Warehouse_SKU__c);
+                 if(warehouseId !='empty' && string.valueof(singleObjMap.get('id'))==warehouseId){
+                     SYstem.debug('Update');
+                     
+                 }
+             }
+            //upsert command
         }//try end
         catch(exception e){
             System.debug('Exception occured at line number'+'\t'+e.getLineNumber()+'\n'+
