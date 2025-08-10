@@ -34,10 +34,26 @@ public class WarehouseCalloutService implements Queueable, database.AllowsCallou
         try{
              map<string,object> singleObjMap= new map<string,object>(); 
              map<string,product2> upsertMap= new map<string,product2>();
-             for(string s:passedMap.keySet()){
-                 list<object> objectList= passedMap.get(s);
-                 if(!objectList.isEmpty())
-                     singleObjMap.put(s,objectList[0]);
+             set<string> warehouseIds= new set<string>(); 
+             //creating singleobjmap
+             if(passedMap.containskey('id')){
+                 list<object> skulist=passedMap.get('id');
+                 System.debug('Object list size'+'\t'+skulist.size());
+                 integer rcount=skuList.size();
+                 for(integer i=0; i<rcount;i++){
+                     object skuObj= skuList[i];
+                     string warehouseId=string.valueof(skuObj).trim(); 
+                     warehouseIds.add(warehouseId); 
+                     map<string,object> rowMap=new map<string,object>();
+                     for(string colName:passedMap.keySet()){
+                         List<object>colValues=passedMap.get(colName);
+                         if(i <colValues.size())
+                             rowMap.put(colname,colValues[i]);
+                     }
+                     singleObjMap.put(warehouseId,rowMap);
+                     for(string col:singleObjMap.keyset()) System.debug('singleObjectMap keyset'+'\t'+col);
+                     System.debug('singleObjectMap values'+'\t'+singleObjMap.values());//
+                 } 
              }
              list<product2> sfrecords= new list<product2>([select name,warehouse_Sku__c,
                                       externalId,lifespan_Months__c,cost__c,
